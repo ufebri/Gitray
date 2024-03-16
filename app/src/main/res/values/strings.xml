@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">GitRay</string>
+    <string name="searchbar_hint">Looking for someone?</string>
+    <string name="lottie_url_not_found">https://lottie.host/c68e4941-e0c8-4936-aa18-38242ccf18aa/iLAcWTiyab.json</string>
+    <string name="retry">Retry</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="item_tab_follower">Followers</string>
+    <string name="item_tab_following">Following</string>
+    <string name="last_visit_profile">Last Visit Profile</string>
+    <string name="heres_the_result_data">Heres the result data</string>
+</resources>

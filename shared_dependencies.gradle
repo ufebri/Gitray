@@ -1,0 +1,10 @@
+dependencies {
+
+    implementation(libs.androidx.core.ktx)
+
+    implementation(libs.hiltAndroid)
+    ksp(libs.hiltAndroidCompiler)
+
+    implementation(libs.androidx.multidex)
+    implementation(libs.androidx.lifecycle.viewmodel)
+}
