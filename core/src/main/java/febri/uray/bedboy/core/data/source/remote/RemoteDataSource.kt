@@ -39,7 +39,7 @@ class RemoteDataSource @Inject constructor(
                 emit(ApiResponse.Error(e.toString()))
                 Log.e("RemoteDataSource", e.toString())
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     suspend fun getUserFollowing(selectedUsername: String): Flow<ApiResponse<List<DataResponse>>> {

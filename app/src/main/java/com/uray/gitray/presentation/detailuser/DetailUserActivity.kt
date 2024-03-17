@@ -79,8 +79,8 @@ class DetailUserActivity : AppCompatActivity() {
 
             val listTabFragment =
                 arrayListOf(
-                    FollowersFragment.newInstance(username),
-                    FollowingFragment.newInstance(username)
+                    FollowingFragment.newInstance(username),
+                    FollowersFragment.newInstance(username)
                 )
 
             viewPager.adapter = SectionsPagerAdapter(this@DetailUserActivity, listTabFragment)

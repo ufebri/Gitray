@@ -9,12 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uray.gitray.R
 import com.uray.gitray.databinding.ActivityMainBinding
 import com.uray.gitray.presentation.detailuser.DetailUserActivity
 import dagger.hilt.android.AndroidEntryPoint
 import febri.uray.bedboy.core.domain.model.User
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -65,37 +68,38 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getListSearchData(keyword: String) {
-        showLottieNotFound(false)
-        showRecyclerView(false)
+        lifecycleScope.launch {
+            showLoading(true)
+            showRecyclerView(false)
+            delay(3000L)
 
-        homeViewModel.getSearchUser(keyword).observe(this) { mData ->
-            if (mData != null) {
-                binding.rvListUser.apply {
-                    showLoading(true)
-                    layoutManager = LinearLayoutManager(this@MainActivity)
-                    val mAdapter = UserPagingAdapter(onClick = { onClickData ->
-                        startActivity(
-                            Intent(
-                                this@MainActivity,
-                                DetailUserActivity::class.java
-                            ).putExtra("username", onClickData.userUsername)
-                        )
-                    }, length = { length -> showLottieNotFound(length < 1) })
+            homeViewModel.getSearchUser(keyword).observe(this@MainActivity) { mData ->
+                if (mData != null) {
+                    with(binding) {
+                        tvTitle.text = getString(R.string.heres_the_result_data)
+                        rvListUser.layoutManager = LinearLayoutManager(this@MainActivity)
+                        val mAdapter = UserPagingAdapter(onClick = { onClickData ->
+                            startActivity(
+                                Intent(
+                                    this@MainActivity,
+                                    DetailUserActivity::class.java
+                                ).putExtra("username", onClickData.userUsername)
+                            )
+                        }, length = { length -> showLottieNotFound(length < 1) })
 
-                    adapter = mAdapter.withLoadStateFooter(footer = LoadingStateAdapter {
-                        mAdapter.retry()
-                    })
+                        rvListUser.adapter =
+                            mAdapter.withLoadStateHeaderAndFooter(footer = LoadingStateAdapter {
+                                mAdapter.retry()
+                            }, header = LoadingStateAdapter { mAdapter.retry() })
 
-                    binding.tvTitle.text = getString(R.string.heres_the_result_data)
-
-                    mAdapter.submitData(lifecycle, mData)
-
+                        mAdapter.submitData(lifecycle, mData)
+                        showLoading(false)
+                        showRecyclerView(true)
+                    }
+                } else {
                     showLoading(false)
-                    showRecyclerView(true)
+                    showLottieNotFound(true)
                 }
-            } else {
-                showLoading(false)
-                showLottieNotFound(true)
             }
         }
     }

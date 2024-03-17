@@ -28,7 +28,7 @@ class AppPagingSource(private val apiService: ApiService, private val keyword: S
 
             LoadResult.Page(
                 data = DataMapper.mapResponseToUsersDomain(responseData.items),
-                prevKey = if (position == INITIAL_PAGE_INDEX) null else position - 1,
+                prevKey = if (position == 1) null else position - 1,
                 nextKey = if (responseData.items.isEmpty()) null else position + 1
             )
         } catch (exception: Exception) {
