@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         //binding
@@ -44,8 +46,8 @@ class MainActivity : AppCompatActivity() {
             searchView
                 .editText
                 .setOnEditorActionListener { _, _, _ ->
-                    if (searchView.text.isNotEmpty()) {
-                        searchBar.setText(searchView.text)
+                    if (searchView.text.toString().isNotEmpty()) {
+                        searchBar.text = searchView.text
                         searchView.hide()
                         getListSearchData(searchView.text.toString())
                     }

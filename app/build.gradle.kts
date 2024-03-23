@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.lottie)
     implementation(libs.glide)
+    implementation(libs.androidx.splashScreen)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

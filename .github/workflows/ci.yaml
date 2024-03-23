@@ -2,10 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
   pull_request:
-    branches: [main]
+    branches: [ main ]
+
+  workflow_dispatch:
 
 jobs:
   start:
@@ -19,7 +21,7 @@ jobs:
 
   lint:
     name: Perform lint check
-    needs: [start]
+    needs: [ start ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
@@ -54,7 +56,7 @@ jobs:
 
   unit-test:
     name: Perform Unit Testing
-    needs: [lint]
+    needs: [ lint ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
@@ -71,7 +73,7 @@ jobs:
 
   instrumentation-test:
     name: Perform Instrumentation Testing
-    needs: [unit-test]
+    needs: [ unit-test ]
     runs-on: macos-latest # MacOS runs faster
     steps:
       - name: Checkout the code
@@ -97,7 +99,7 @@ jobs:
 
   static-code-analysis:
     name: Perform static code analysis
-    needs: [instrumentation-test]
+    needs: [ instrumentation-test ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
@@ -115,7 +117,7 @@ jobs:
 
   debug-apk:
     name: Generate Debug APK
-    needs: [static-code-analysis]
+    needs: [ static-code-analysis ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
