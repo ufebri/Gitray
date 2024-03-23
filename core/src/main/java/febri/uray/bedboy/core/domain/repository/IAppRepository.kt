@@ -24,4 +24,7 @@ interface IAppRepository {
 
     fun getFollowing(username: String): Flow<Resource<List<User>>>
 
+    fun getListFavoriteUsers(): Flow<List<User>>
+
+    fun insertFavoriteUser(user: User, newState: Boolean)
 }

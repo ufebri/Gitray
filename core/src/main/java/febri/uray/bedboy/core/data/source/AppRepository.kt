@@ -79,8 +79,15 @@ class AppRepository @Inject constructor(
     override fun getFollowers(username: String): Flow<Resource<List<User>>> = flow {
         remoteDataSource.getUserFollowers(username).collect {
             emit(Resource.Loading())
-            when(it) {
-                is ApiResponse.Success -> emit(Resource.Success(DataMapper.mapResponseToUsersDomain(it.data)))
+            when (it) {
+                is ApiResponse.Success -> emit(
+                    Resource.Success(
+                        DataMapper.mapResponseToUsersDomain(
+                            it.data
+                        )
+                    )
+                )
+
                 is ApiResponse.Error -> emit(Resource.Error("error"))
                 is ApiResponse.Empty -> emit(Resource.Error("empty"))
             }
@@ -91,12 +98,27 @@ class AppRepository @Inject constructor(
         flow {
             remoteDataSource.getUserFollowing(username).collect {
                 emit(Resource.Loading())
-                when(it) {
-                    is ApiResponse.Success -> emit(Resource.Success(DataMapper.mapResponseToUsersDomain(it.data)))
+                when (it) {
+                    is ApiResponse.Success -> emit(
+                        Resource.Success(
+                            DataMapper.mapResponseToUsersDomain(
+                                it.data
+                            )
+                        )
+                    )
+
                     is ApiResponse.Error -> emit(Resource.Error("error"))
                     is ApiResponse.Empty -> emit(Resource.Error("empty"))
                 }
             }
         }
 
+
+    override fun getListFavoriteUsers(): Flow<List<User>> =
+        localDataSource.getFavoriteUsers().map { DataMapper.mapEntitiesToUsersDomain(it) }
+
+    override fun insertFavoriteUser(user: User, newState: Boolean) {
+        val mData = DataMapper.mapDomainToUserEntities(user)
+        return appExecutors.diskIO().execute { localDataSource.insertFavoriteUser(mData, newState) }
+    }
 }

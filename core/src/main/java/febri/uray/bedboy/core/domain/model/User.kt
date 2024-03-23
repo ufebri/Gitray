@@ -12,5 +12,6 @@ data class User(
     var userFullName: String? = null,
     var userFollowers: Int? = null,
     var userFollowing: Int? = null,
-    var lastVisit: String? = null
+    var lastVisit: String? = null,
+    var isFavorite: Boolean
 ) : Parcelable

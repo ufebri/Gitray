@@ -29,4 +29,9 @@ class AppInteractor @Inject constructor(private var appRepository: IAppRepositor
     override fun getFollowing(username: String): Flow<Resource<List<User>>> =
         appRepository.getFollowing(username)
 
+    override fun getFavoriteUsers(): Flow<List<User>> = appRepository.getListFavoriteUsers()
+
+    override fun insertFavoriteUser(user: User, newState: Boolean) =
+        appRepository.insertFavoriteUser(user, newState)
+
 }

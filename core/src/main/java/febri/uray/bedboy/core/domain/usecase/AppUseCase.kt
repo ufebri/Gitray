@@ -16,5 +16,6 @@ interface AppUseCase {
     fun deleteUser(user: User)
     fun getFollowers(username: String): Flow<Resource<List<User>>>
     fun getFollowing(username: String): Flow<Resource<List<User>>>
-
+    fun getFavoriteUsers(): Flow<List<User>>
+    fun insertFavoriteUser(user: User, newState: Boolean)
 }

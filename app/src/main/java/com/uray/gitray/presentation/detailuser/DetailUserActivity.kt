@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -15,6 +16,7 @@ import com.uray.gitray.R
 import com.uray.gitray.databinding.ActivityDetailUserBinding
 import dagger.hilt.android.AndroidEntryPoint
 import febri.uray.bedboy.core.data.Resource
+import febri.uray.bedboy.core.domain.model.User
 
 @AndroidEntryPoint
 class DetailUserActivity : AppCompatActivity() {
@@ -61,6 +63,36 @@ class DetailUserActivity : AppCompatActivity() {
                             tvUsername.text = String.format("@%s", it?.userUsername)
                             tvFullName.text = it?.userFullName
                             showLoading(false)
+
+
+                            //setFavorite
+                            if (it?.isFavorite == true) {
+                                fabFavorite.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        this@DetailUserActivity,
+                                        R.drawable.baseline_favorite_24
+                                    )
+                                )
+                            } else {
+                                fabFavorite.setImageDrawable(
+                                    ContextCompat.getDrawable(
+                                        this@DetailUserActivity,
+                                        R.drawable.baseline_favorite_border_24
+                                    )
+                                )
+                            }
+
+                            fabFavorite.apply {
+                                isVisible = true
+                                setOnClickListener {
+                                    mData.data?.let { data ->
+                                        detailUserViewModel.insertFavoriteUser(
+                                            data,
+                                            !data.isFavorite
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -77,19 +109,24 @@ class DetailUserActivity : AppCompatActivity() {
         //setup tablayout
         binding.apply {
 
-            val listTabFragment =
-                arrayListOf(
-                    FollowingFragment.newInstance(username),
-                    FollowersFragment.newInstance(username)
-                )
+            if (username != null) {
+                val listTabFragment =
+                    arrayListOf(
+                        FollowingFragment.newInstance(username),
+                        FollowersFragment.newInstance(username)
+                    )
 
-            viewPager.adapter = SectionsPagerAdapter(this@DetailUserActivity, listTabFragment)
-            TabLayoutMediator(tabs, viewPager) { tab, position ->
-                tab.text = resources.getString(TAB_TITLES[position])
-            }.attach()
-            supportActionBar?.elevation = 0f
+                viewPager.adapter = SectionsPagerAdapter(this@DetailUserActivity, listTabFragment)
+                TabLayoutMediator(tabs, viewPager) { tab, position ->
+                    tab.text = resources.getString(TAB_TITLES[position])
+                }.attach()
+                supportActionBar?.elevation = 0f
+            }
         }
     }
+
+    private fun setFavorite(user: User, newState: Boolean) =
+        detailUserViewModel.insertFavoriteUser(user, newState)
 
     private fun showLoading(state: Boolean) {
         binding.apply {

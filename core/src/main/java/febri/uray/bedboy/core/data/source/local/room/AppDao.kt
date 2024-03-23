@@ -27,4 +27,7 @@ interface AppDao {
 
     @Delete
     fun deleteUser(mUser: UserEntity)
+
+    @Query("SELECT * FROM user_entity WHERE isFavorite = 1")
+    fun getFavoriteUser(): Flow<List<UserEntity>>
 }

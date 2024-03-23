@@ -28,7 +28,8 @@ object DataMapper {
             it?.userFullName ?: "",
             it?.userFollowers,
             it?.userFollowing,
-            it?.lastVisit
+            it?.lastVisit,
+            isFavorite = it?.isFavorite ?: false
         )
     }
 
@@ -43,7 +44,8 @@ object DataMapper {
                 it.userFullName,
                 it.userFollowers,
                 it.userFollowing,
-                it.lastVisit
+                it.lastVisit,
+                it.isFavorite
             )
             mListData.add(user)
         }
@@ -58,7 +60,8 @@ object DataMapper {
             userFollowing = it.following,
             userFollowers = it.followers,
             userBio = it.bio,
-            userFullName = it.name
+            userFullName = it.name,
+            isFavorite = false
         )
     }
 
@@ -85,7 +88,8 @@ object DataMapper {
                 userFullName = it.name,
                 userFollowers = it.followers,
                 userFollowing = it.following,
-                ""
+                "",
+                isFavorite = false
             )
             mListData.add(user)
         }

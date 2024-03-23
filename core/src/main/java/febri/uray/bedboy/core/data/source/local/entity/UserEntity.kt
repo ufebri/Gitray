@@ -30,5 +30,8 @@ data class UserEntity(
     var userFollowing: Int? = null,
 
     @ColumnInfo("last_visit")
-    var lastVisit: String? = null
+    var lastVisit: String? = null,
+
+    @ColumnInfo("isFavorite")
+    var isFavorite: Boolean = false
 )

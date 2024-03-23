@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.glide)
     implementation(libs.androidx.splashScreen)
+    implementation(libs.androidx.navigation.fragmentKTX)
+    implementation(libs.androidx.navigation.uiKTX)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
