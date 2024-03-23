@@ -78,6 +78,7 @@ dependencies {
     api(libs.androidx.lifecycle)
     api(libs.androidx.activityKTX)
     api(libs.androidx.fragmentKTX)
+    api(libs.androidx.datastore)
 
     //paging
     api(libs.androidx.pagingRuntime)

@@ -1,5 +1,9 @@
 package febri.uray.bedboy.core.data.source
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -17,6 +21,8 @@ import febri.uray.bedboy.core.util.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +31,8 @@ import javax.inject.Singleton
 class AppRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val appExecutors: AppExecutors
+    private val appExecutors: AppExecutors,
+    private val dataStore: DataStore<Preferences>
 ) : IAppRepository {
 
     override fun insertNewUser(newUser: User) {
@@ -120,5 +127,22 @@ class AppRepository @Inject constructor(
     override fun insertFavoriteUser(user: User, newState: Boolean) {
         val mData = DataMapper.mapDomainToUserEntities(user)
         return appExecutors.diskIO().execute { localDataSource.insertFavoriteUser(mData, newState) }
+    }
+
+    override fun getBooleanPreferenceKey(key: String): Flow<Boolean> =
+        dataStore.data.map { preferences ->
+            val mKey = booleanPreferencesKey(key)
+            preferences[mKey] ?: false
+        }
+
+    override fun saveBooleanPreferenceKey(key: String, newState: Boolean) {
+        runBlocking {
+            launch {
+                dataStore.edit { preferences ->
+                    val mKey = booleanPreferencesKey(key)
+                    preferences[mKey] = newState
+                }
+            }
+        }
     }
 }

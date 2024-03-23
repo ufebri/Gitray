@@ -34,4 +34,10 @@ class AppInteractor @Inject constructor(private var appRepository: IAppRepositor
     override fun insertFavoriteUser(user: User, newState: Boolean) =
         appRepository.insertFavoriteUser(user, newState)
 
+    override fun getBooleanPreferenceKey(key: String): Flow<Boolean> =
+        appRepository.getBooleanPreferenceKey(key)
+
+    override fun saveBooleanPreferenceKey(key: String, newState: Boolean) =
+        appRepository.saveBooleanPreferenceKey(key, newState)
+
 }

@@ -27,4 +27,7 @@ interface IAppRepository {
     fun getListFavoriteUsers(): Flow<List<User>>
 
     fun insertFavoriteUser(user: User, newState: Boolean)
+
+    fun getBooleanPreferenceKey(key: String): Flow<Boolean>
+    fun saveBooleanPreferenceKey(key: String, newState: Boolean)
 }

@@ -18,4 +18,6 @@ interface AppUseCase {
     fun getFollowing(username: String): Flow<Resource<List<User>>>
     fun getFavoriteUsers(): Flow<List<User>>
     fun insertFavoriteUser(user: User, newState: Boolean)
+    fun getBooleanPreferenceKey(key: String): Flow<Boolean>
+    fun saveBooleanPreferenceKey(key: String, newState: Boolean)
 }

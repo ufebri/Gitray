@@ -6,7 +6,7 @@ import febri.uray.bedboy.core.data.source.local.entity.UserEntity
 
 @Database(
     entities = [UserEntity::class],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
