@@ -28,3 +28,4 @@ Credit
 
 - [Material Theme Builder](https://m3.material.io/theme-builder)
 - [Icon.kitchen](https://icon.kitchen)
+- [Privacy Page Generator](https://app-privacy-policy-generator.firebaseapp.com/)
